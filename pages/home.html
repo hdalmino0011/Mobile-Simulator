@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safari Start Page</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      background: #f2f2f7;
+      color: #1c1c1e;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Top greeting ── */
+    .greeting-section {
+      padding: 28px 20px 16px;
+      text-align: center;
+    }
+    .greeting {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #1c1c1e;
+    }
+    .date-text {
+      font-size: 14px;
+      color: #8e8e93;
+      margin-top: 4px;
+    }
+
+    /* ── Search bar (visual only) ── */
+    .search-field {
+      margin: 12px 16px 0;
+      background: rgba(118,118,128,0.12);
+      border-radius: 12px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #8e8e93;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-field:active { background: rgba(118,118,128,0.2); }
+    .search-field svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ── Favorites grid ── */
+    .section-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #1c1c1e;
+      padding: 20px 20px 10px;
+    }
+
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 0 16px;
+    }
+
+    .fav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .fav-item:active .fav-icon { transform: scale(0.88); }
+
+    .fav-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+
+    .fav-label {
+      font-size: 11px;
+      color: #3c3c43;
+      text-align: center;
+      line-height: 1.2;
+      max-width: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ── Frequently Visited ── */
+    .visited-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 0 16px;
+    }
+    .visited-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .visited-item:active .visited-icon { transform: scale(0.88); }
+    .visited-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .visited-label {
+      font-size: 10px;
+      color: #6c6c70;
+      text-align: center;
+    }
+
+    /* ── Privacy Report ── */
+    .privacy-card {
+      margin: 20px 16px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .privacy-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .privacy-icon {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #5e5ce6, #007aff);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .privacy-title { font-size: 15px; font-weight: 600; color: #1c1c1e; }
+    .privacy-sub { font-size: 13px; color: #8e8e93; margin-top: 2px; }
+    .privacy-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .privacy-num {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1c1c1e;
+      letter-spacing: -1px;
+    }
+    .privacy-desc { font-size: 14px; color: #6c6c70; }
+    .privacy-bar {
+      height: 4px;
+      background: #e5e5ea;
+      border-radius: 2px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+    .privacy-bar-fill {
+      height: 100%;
+      width: 73%;
+      background: linear-gradient(90deg, #5e5ce6, #007aff);
+      border-radius: 2px;
+    }
+    .privacy-note { font-size: 12px; color: #aeaeb2; }
+
+    /* ── Reading list preview ── */
+    .reading-card {
+      margin: 0 16px 20px;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .reading-card-header {
+      padding: 14px 16px 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1c1c1e;
+      border-bottom: 0.5px solid rgba(60,60,67,0.1);
+    }
+    .reading-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 16px;
+      align-items: flex-start;
+      border-bottom: 0.5px solid rgba(60,60,67,0.08);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .reading-item:last-child { border-bottom: none; }
+    .reading-item:active { background: rgba(0,0,0,0.04); }
+    .reading-thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 8px;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #f2f2f7;
+    }
+    .reading-info { flex: 1; min-width: 0; }
+    .reading-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1c1c1e;
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+    .reading-source { font-size: 12px; color: #8e8e93; }
+
+    /* ── Bottom padding ── */
+    .bottom-pad { height: 32px; }
+
+    /* ── Dark mode ── */
+    @media (prefers-color-scheme: dark) {
+      body { background: #000; color: #fff; }
+      .greeting { color: #fff; }
+      .search-field { background: rgba(118,118,128,0.24); color: #aeaeb2; }
+      .section-title { color: #fff; }
+      .fav-label { color: #aeaeb2; }
+      .visited-icon { background: #1c1c1e; }
+      .visited-label { color: #8e8e93; }
+      .privacy-card, .reading-card { background: #1c1c1e; }
+      .privacy-title, .privacy-num, .reading-title { color: #fff; }
+      .reading-thumb { background: #2c2c2e; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Greeting -->
+  <div class="greeting-section">
+    <div class="greeting" id="greet">Good Morning</div>
+    <div class="date-text" id="dateText">Wednesday, June 25</div>
+  </div>
+
+  <!-- Visual search bar (tapping parent frame's bar) -->
+  <div class="search-field" onclick="parent.postMessage({type:'focusUrl'},'*')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    Search or enter website name
+  </div>
+
+  <!-- Favorites -->
+  <div class="section-title">Favorites</div>
+  <div class="favorites-grid">
+    <div class="fav-item" onclick="navigate('news')">
+      <div class="fav-icon" style="background:linear-gradient(135deg,#ff6b6b,#ee0979)">📰</div>
+      <div class="fav-label">News</div>
+    </div>
+    <div class="fav-item" onclick="navigate('settings')">
+      <div class="fav-icon" style="background:linear-gradient(135deg,#a8edea,#fed6e3)">⚙️</div>
+      <div class="fav-label">Settings</div>
+    </div>
+    <div class="fav-item" onclick="navigate('safari://home')">
+      <div class="fav-icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">🌐</div>
+      <div class="fav-label">Safari</div>
+    </div>
+    <div class="fav-item" onclick="navigate('news')">
+      <div class="fav-icon" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">📖</div>
+      <div class="fav-label">Articles</div>
+    </div>
+    <div class="fav-item" onclick="navigate('settings')">
+      <div class="fav-icon" style="background:linear-gradient(135deg,#fa709a,#fee140)">🗂️</div>
+      <div class="fav-label">Bookmarks</div>
+    </div>
+    <div class="fav-item" onclick="navigate('news')">
+      <div class="fav-icon" style="background:linear-gradient(135deg,#a18cd1,#fbc2eb)">🎵</div>
+      <div class="fav-label">Music</div>
+    </div>
+    <div class="fav-item" onclick="navigate('settings')">
+      <div class="fav-icon" style="background:linear-gradient(135deg,#ffecd2,#fcb69f)">🛒</div>
+      <div class="fav-label">Shop</div>
+    </div>
+    <div class="fav-item" onclick="navigate('news')">
+      <div class="fav-icon" style="background:linear-gradient(135deg,#96fbc4,#f9f586)">📧</div>
+      <div class="fav-label">Mail</div>
+    </div>
+  </div>
+
+  <!-- Frequently Visited -->
+  <div class="section-title">Frequently Visited</div>
+  <div class="visited-grid">
+    <div class="visited-item" onclick="navigate('news')">
+      <div class="visited-icon">📰</div>
+      <div class="visited-label">Top Stories</div>
+    </div>
+    <div class="visited-item" onclick="navigate('settings')">
+      <div class="visited-icon">⚙️</div>
+      <div class="visited-label">Settings</div>
+    </div>
+    <div class="visited-item" onclick="navigate('search: weather today')">
+      <div class="visited-icon">🌤️</div>
+      <div class="visited-label">Weather</div>
+    </div>
+    <div class="visited-item" onclick="navigate('search: apple')">
+      <div class="visited-icon">🍎</div>
+      <div class="visited-label">Apple</div>
+    </div>
+  </div>
+
+  <!-- Privacy Report -->
+  <div class="privacy-card">
+    <div class="privacy-header">
+      <div class="privacy-icon">🔒</div>
+      <div>
+        <div class="privacy-title">Privacy Report</div>
+        <div class="privacy-sub">This week</div>
+      </div>
+    </div>
+    <div class="privacy-stat">
+      <div class="privacy-num">14</div>
+      <div class="privacy-desc">trackers blocked</div>
+    </div>
+    <div class="privacy-bar"><div class="privacy-bar-fill"></div></div>
+    <div class="privacy-note">Safari prevented 14 trackers from profiling you this week.</div>
+  </div>
+
+  <!-- Reading List Preview -->
+  <div class="reading-card">
+    <div class="reading-card-header">Reading List</div>
+    <div class="reading-item" onclick="navigate('news')">
+      <div class="reading-thumb">📱</div>
+      <div class="reading-info">
+        <div class="reading-title">The Future of Mobile Computing in 2025</div>
+        <div class="reading-source">tech.example.com · 4 min read</div>
+      </div>
+    </div>
+    <div class="reading-item" onclick="navigate('news')">
+      <div class="reading-thumb">🌍</div>
+      <div class="reading-info">
+        <div class="reading-title">How Renewable Energy Is Reshaping the Grid</div>
+        <div class="reading-source">energy.example.com · 6 min read</div>
+      </div>
+    </div>
+    <div class="reading-item" onclick="navigate('news')">
+      <div class="reading-thumb">🎨</div>
+      <div class="reading-info">
+        <div class="reading-title">Design Principles Every Developer Should Know</div>
+        <div class="reading-source">design.example.com · 3 min read</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-pad"></div>
+
+  <script>
+    function navigate(url) {
+      parent.postMessage({ type: 'navigate', url: url }, '*');
+    }
+
+    // Greeting
+    const h = new Date().getHours();
+    const greet = document.getElementById('greet');
+    if (h < 12) greet.textContent = 'Good Morning';
+    else if (h < 17) greet.textContent = 'Good Afternoon';
+    else greet.textContent = 'Good Evening';
+
+    // Date
+    const d = new Date();
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('dateText').textContent =
+      `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}`;
+  </script>
+</body>
+</html>
