@@ -1,372 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Settings</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-      background: #f2f2f7;
-      color: #1c1c1e;
-      min-height: 100vh;
-    }
-
-    /* ── Header ── */
-    .nav-header {
-      background: rgba(242,242,247,0.9);
-      backdrop-filter: blur(20px);
-      padding: 16px 16px 10px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      border-bottom: 0.5px solid rgba(0,0,0,.10);
-    }
-    .nav-title {
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: -0.8px;
-      color: #1c1c1e;
-    }
-    .search-bar {
-      margin-top: 10px;
-      background: rgba(118,118,128,0.12);
-      border-radius: 10px;
-      padding: 8px 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #8e8e93;
-      font-size: 15px;
-    }
-    .search-bar svg { width: 16px; height: 16px; flex-shrink: 0; }
-
-    /* ── Profile card ── */
-    .profile-card {
-      margin: 12px 16px;
-      background: #fff;
-      border-radius: 14px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.08);
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .profile-card:active { background: rgba(0,0,0,.04); }
-    .profile-avatar {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      flex-shrink: 0;
-    }
-    .profile-info { flex: 1; }
-    .profile-name { font-size: 19px; font-weight: 700; color: #1c1c1e; }
-    .profile-sub { font-size: 13px; color: #8e8e93; margin-top: 2px; }
-    .profile-chevron { color: #c7c7cc; }
-    .profile-chevron svg { width: 18px; height: 18px; }
-
-    /* ── Section ── */
-    .section-group {
-      margin: 0 16px 10px;
-    }
-    .section-label {
-      font-size: 13px;
-      font-weight: 400;
-      color: #6c6c70;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      padding: 0 4px 6px;
-    }
-    .settings-list {
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,.06);
-    }
-    .settings-row {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      gap: 14px;
-      border-bottom: 0.5px solid rgba(60,60,67,0.12);
-      cursor: pointer;
-      transition: background 0.15s;
-      min-height: 52px;
-    }
-    .settings-row:last-child { border-bottom: none; }
-    .settings-row:active { background: rgba(0,0,0,.04); }
-
-    .row-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-
-    .row-label {
-      flex: 1;
-      font-size: 16px;
-      color: #1c1c1e;
-      font-weight: 400;
-    }
-
-    .row-value {
-      font-size: 15px;
-      color: #8e8e93;
-      margin-right: 4px;
-    }
-
-    .row-badge {
-      background: #ff3b30;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-      min-width: 20px;
-      height: 20px;
-      border-radius: 10px;
-      padding: 0 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .row-chevron {
-      color: #c7c7cc;
-    }
-    .row-chevron svg { width: 16px; height: 16px; }
-
-    /* Toggle */
-    .toggle-switch {
-      width: 51px;
-      height: 31px;
-      border-radius: 15.5px;
-      position: relative;
-      cursor: pointer;
-      transition: background 0.25s ease;
-      flex-shrink: 0;
-    }
-    .toggle-switch.on { background: #34c759; }
-    .toggle-switch.off { background: rgba(120,120,128,0.2); }
-    .toggle-thumb {
-      position: absolute;
-      top: 2px;
-      width: 27px;
-      height: 27px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
-      transition: left 0.25s cubic-bezier(0.4,0,0.2,1);
-    }
-    .toggle-switch.on .toggle-thumb { left: 22px; }
-    .toggle-switch.off .toggle-thumb { left: 2px; }
-
-    .bottom-pad { height: 40px; }
-
-    @media (prefers-color-scheme: dark) {
-      body { background: #000; }
-      .nav-header { background: rgba(0,0,0,.9); border-color: rgba(255,255,255,.1); }
-      .nav-title { color: #fff; }
-      .search-bar { background: rgba(118,118,128,.24); }
-      .profile-card { background: #1c1c1e; }
-      .profile-name { color: #fff; }
-      .settings-list { background: #1c1c1e; }
-      .row-label { color: #fff; }
-      .settings-row { border-color: rgba(84,84,88,.65); }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f2f2f7;color:#1c1c1e;min-height:100vh}
+    .nav{background:rgba(242,242,247,.95);backdrop-filter:blur(20px);padding:16px 16px 10px;position:sticky;top:0;z-index:5;border-bottom:.5px solid rgba(0,0,0,.10)}
+    .nav-title{font-size:34px;font-weight:800;letter-spacing:-.8px}
+    .search{margin-top:10px;background:rgba(118,118,128,.12);border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:6px;color:#8e8e93;font-size:15px}
+    .search svg{width:16px;height:16px;flex-shrink:0}
+    .profile{margin:12px 16px;background:#fff;border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.07);transition:background .15s}
+    .profile:active{background:rgba(0,0,0,.04)}
+    .avatar{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+    .pname{font-size:19px;font-weight:700}
+    .psub{font-size:13px;color:#8e8e93;margin-top:2px}
+    .chevron{color:#c7c7cc;margin-left:auto}
+    .chevron svg{width:18px;height:18px}
+    .grp{margin:0 16px 10px}
+    .grp-label{font-size:13px;color:#6c6c70;text-transform:uppercase;letter-spacing:.3px;padding:0 4px 6px}
+    .list{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .row{display:flex;align-items:center;padding:12px 16px;gap:14px;border-bottom:.5px solid rgba(60,60,67,.12);cursor:pointer;min-height:52px;transition:background .15s}
+    .row:last-child{border-bottom:none}
+    .row:active{background:rgba(0,0,0,.04)}
+    .icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .label{flex:1;font-size:16px;color:#1c1c1e}
+    .val{font-size:15px;color:#8e8e93;margin-right:4px}
+    .badge{background:#ff3b30;color:#fff;font-size:11px;font-weight:700;min-width:20px;height:20px;border-radius:10px;padding:0 5px;display:flex;align-items:center;justify-content:center}
+    .ch{color:#c7c7cc}
+    .ch svg{width:16px;height:16px}
+    /* toggle */
+    .tog{width:51px;height:31px;border-radius:15.5px;position:relative;cursor:pointer;transition:background .25s;flex-shrink:0}
+    .tog.on{background:#34c759} .tog.off{background:rgba(120,120,128,.2)}
+    .thumb{position:absolute;top:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.25);transition:left .25s cubic-bezier(.4,0,.2,1)}
+    .tog.on .thumb{left:22px} .tog.off .thumb{left:2px}
+    @media(prefers-color-scheme:dark){
+      body{background:#000}
+      .nav{background:rgba(0,0,0,.95);border-color:rgba(255,255,255,.08)}
+      .nav-title{color:#fff}
+      .search{background:rgba(118,118,128,.24)}
+      .profile,.list{background:#1c1c1e}
+      .pname,.label{color:#fff}
+      .row{border-color:rgba(84,84,88,.65)}
     }
   </style>
 </head>
 <body>
-
-  <div class="nav-header">
+  <div class="nav">
     <div class="nav-title">Settings</div>
-    <div class="search-bar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       Search
     </div>
   </div>
 
-  <!-- Apple ID -->
-  <div class="profile-card">
-    <div class="profile-avatar">👤</div>
-    <div class="profile-info">
-      <div class="profile-name">Your Name</div>
-      <div class="profile-sub">Apple ID, iCloud, Media & Purchases</div>
-    </div>
-    <div class="profile-chevron">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <path d="M9 18l6-6-6-6"/>
-      </svg>
+  <div class="profile">
+    <div class="avatar">👤</div>
+    <div><div class="pname">Your Name</div><div class="psub">Apple ID, iCloud, Media &amp; Purchases</div></div>
+    <div class="chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
+  </div>
+
+  <div class="grp">
+    <div class="list">
+      <div class="row"><div class="icon" style="background:#ff9500">✈️</div><div class="label">Airplane Mode</div><div class="tog off" onclick="flip(this)"><div class="thumb"></div></div></div>
+      <div class="row"><div class="icon" style="background:#007aff">📶</div><div class="label">Wi-Fi</div><div class="val">Home Network</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
+      <div class="row"><div class="icon" style="background:#007aff">🔷</div><div class="label">Bluetooth</div><div class="val">On</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
+      <div class="row"><div class="icon" style="background:#32ade6">📡</div><div class="label">Cellular</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
     </div>
   </div>
 
-  <!-- Top section: airplane/wifi etc -->
-  <div class="section-group">
-    <div class="settings-list">
-      <div class="settings-row" onclick="toggleRow(this)">
-        <div class="row-icon" style="background:#ff9500">✈️</div>
-        <div class="row-label">Airplane Mode</div>
-        <div class="toggle-switch off" onclick="flipToggle(event,this)">
-          <div class="toggle-thumb"></div>
-        </div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#007aff">📶</div>
-        <div class="row-label">Wi-Fi</div>
-        <div class="row-value">Home Network</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#007aff">🔷</div>
-        <div class="row-label">Bluetooth</div>
-        <div class="row-value">On</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#32ade6">📡</div>
-        <div class="row-label">Cellular</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
+  <div class="grp">
+    <div class="list">
+      <div class="row"><div class="icon" style="background:#ff3b30">🔔</div><div class="label">Notifications</div><div class="badge">3</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
+      <div class="row"><div class="icon" style="background:#ff2d55">🔊</div><div class="label">Sounds &amp; Haptics</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
+      <div class="row"><div class="icon" style="background:#5e5ce6">🌙</div><div class="label">Focus</div><div class="val">Off</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
+      <div class="row"><div class="icon" style="background:#ff9f0a">⏰</div><div class="label">Screen Time</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
     </div>
   </div>
 
-  <!-- Notifications, Sound, Focus -->
-  <div class="section-group">
-    <div class="settings-list">
-      <div class="settings-row">
-        <div class="row-icon" style="background:#ff3b30">🔔</div>
-        <div class="row-label">Notifications</div>
-        <div class="row-badge">3</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#ff2d55">🔊</div>
-        <div class="row-label">Sounds & Haptics</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#5e5ce6">🌙</div>
-        <div class="row-label">Focus</div>
-        <div class="row-value">Off</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#ff9f0a">⏰</div>
-        <div class="row-label">Screen Time</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
+  <div class="grp">
+    <div class="list">
+      <div class="row"><div class="icon" style="background:#8e8e93">⚙️</div><div class="label">General</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
+      <div class="row"><div class="icon" style="background:#1c1c1e">🌑</div><div class="label">Display &amp; Brightness</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
+      <div class="row"><div class="icon" style="background:#5e5ce6">♿</div><div class="label">Accessibility</div><div class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div></div>
     </div>
   </div>
 
-  <!-- General, Display, etc -->
-  <div class="section-group">
-    <div class="settings-list">
-      <div class="settings-row">
-        <div class="row-icon" style="background:#8e8e93">⚙️</div>
-        <div class="row-label">General</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#5e5ce6">♿</div>
-        <div class="row-label">Accessibility</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#1c1c1e">🌑</div>
-        <div class="row-label">Display & Brightness</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#ff2d55">🏠</div>
-        <div class="row-label">Home Screen & App Library</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
+  <div class="grp">
+    <div class="grp-label">Safari Settings</div>
+    <div class="list">
+      <div class="row"><div class="label">Block Pop-ups</div><div class="tog on" onclick="flip(this)"><div class="thumb"></div></div></div>
+      <div class="row"><div class="label">Prevent Cross-Site Tracking</div><div class="tog on" onclick="flip(this)"><div class="thumb"></div></div></div>
+      <div class="row"><div class="label">Private Browsing Lock</div><div class="tog off" onclick="flip(this)"><div class="thumb"></div></div></div>
+      <div class="row"><div class="label">Show Favorites Bar</div><div class="tog on" onclick="flip(this)"><div class="thumb"></div></div></div>
     </div>
   </div>
 
-  <!-- Apps section -->
-  <div class="section-group">
-    <div class="section-label">Apps</div>
-    <div class="settings-list">
-      <div class="settings-row">
-        <div class="row-icon" style="background:#007aff">🧭</div>
-        <div class="row-label">Safari</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#34c759">📱</div>
-        <div class="row-label">App Store</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#ff3b30">📷</div>
-        <div class="row-label">Camera</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-      <div class="settings-row">
-        <div class="row-icon" style="background:#ff9f0a">🗺️</div>
-        <div class="row-label">Maps</div>
-        <div class="row-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Safari section with toggles -->
-  <div class="section-group">
-    <div class="section-label">Safari Settings</div>
-    <div class="settings-list">
-      <div class="settings-row">
-        <div class="row-label">Block Pop-ups</div>
-        <div class="toggle-switch on" onclick="flipToggle(event,this)">
-          <div class="toggle-thumb"></div>
-        </div>
-      </div>
-      <div class="settings-row">
-        <div class="row-label">Prevent Cross-Site Tracking</div>
-        <div class="toggle-switch on" onclick="flipToggle(event,this)">
-          <div class="toggle-thumb"></div>
-        </div>
-      </div>
-      <div class="settings-row">
-        <div class="row-label">Private Browsing</div>
-        <div class="toggle-switch off" onclick="flipToggle(event,this)">
-          <div class="toggle-thumb"></div>
-        </div>
-      </div>
-      <div class="settings-row">
-        <div class="row-label">Show Favorites Bar</div>
-        <div class="toggle-switch on" onclick="flipToggle(event,this)">
-          <div class="toggle-thumb"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="bottom-pad"></div>
-
+  <div style="height:36px"></div>
   <script>
-    function flipToggle(e, el) {
-      e.stopPropagation();
-      if (el.classList.contains('on')) {
-        el.classList.remove('on');
-        el.classList.add('off');
-      } else {
-        el.classList.remove('off');
-        el.classList.add('on');
-      }
+    function flip(el){
+      if(el.classList.contains('on')){el.classList.replace('on','off')}else{el.classList.replace('off','on')}
     }
   </script>
 </body>
