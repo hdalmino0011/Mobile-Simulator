@@ -8,198 +8,174 @@
 </head>
 <body>
 
-  <!-- ═══════════════════════════ STATUS BAR ═══════════════════════════ -->
-  <div class="status-bar" id="statusBar">
-    <div class="status-time" id="statusTime">9:41</div>
+  <!-- ══ STATUS BAR ══ -->
+  <div class="status-bar">
+    <div class="status-time" id="statusTime">10:31</div>
     <div class="status-icons">
-      <!-- Signal bars -->
       <div class="signal-bars">
-        <span class="bar b1"></span>
-        <span class="bar b2"></span>
-        <span class="bar b3"></span>
-        <span class="bar b4"></span>
+        <span class="bar b1"></span><span class="bar b2"></span>
+        <span class="bar b3"></span><span class="bar b4"></span>
       </div>
-      <!-- WiFi -->
-      <svg class="wifi-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M1.5 8.5a17 17 0 0121 0M5.5 12.5a11 11 0 0113 0M9.5 16.5a5 5 0 015 0M12 20.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <svg class="wifi-icon" viewBox="0 0 24 18" fill="currentColor">
+        <path d="M12 14.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm0-4a5.5 5.5 0 014.95 3.08l-1.6 1.6A3.5 3.5 0 0012 13a3.5 3.5 0 00-3.35 2.18l-1.6-1.6A5.5 5.5 0 0112 10.5zm0-4a9.5 9.5 0 018.07 4.5l-1.6 1.6A7.5 7.5 0 0012 9a7.5 7.5 0 00-6.47 3.6l-1.6-1.6A9.5 9.5 0 0112 6.5zm0-4C15.87 2.5 19.36 4.1 21.8 6.7l-1.6 1.6A11.47 11.47 0 0012 4.5a11.47 11.47 0 00-8.2 3.8L2.2 6.7A13.47 13.47 0 0112 2.5z"/>
       </svg>
-      <!-- Battery -->
       <div class="battery-icon">
-        <div class="battery-body">
-          <div class="battery-fill"></div>
-        </div>
+        <div class="battery-body"><div class="battery-fill"></div></div>
         <div class="battery-nub"></div>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════ TOP BAR ═══════════════════════════ -->
-  <div class="top-bar" id="topBar">
-    <div class="url-bar-row">
-      <div class="url-container" id="urlContainer">
-        <div class="url-display" id="urlDisplay" onclick="activateUrlBar()">
-          <div class="url-icon-lock">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <rect x="5" y="11" width="14" height="10" rx="2"/>
-              <path d="M8 11V7a4 4 0 018 0v4"/>
-            </svg>
-          </div>
-          <span class="url-text" id="urlText">Start Page</span>
+  <!-- ══ PROGRESS BAR ══ -->
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- ══ CONTENT IFRAME ══ -->
+  <div class="browser-viewport" id="browserViewport">
+    <iframe class="page-frame" id="pageFrame" src="pages/home.html" frameborder="0"
+      sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+    <div class="transition-overlay" id="transitionOverlay"></div>
+  </div>
+
+  <!-- ══ BOTTOM CHROME ══ -->
+  <div class="bottom-chrome" id="bottomChrome">
+
+    <!-- URL bar row -->
+    <div class="url-bar-wrap" id="urlBarWrap">
+      <div class="url-bar" id="urlBar" onclick="activateUrl()">
+        <div class="url-bar-inner" id="urlBarInner">
+          <svg class="url-lock" viewBox="0 0 12 14" fill="currentColor">
+            <path d="M10 6V4.5a4 4 0 00-8 0V6H1v8h10V6h-1zM4 4.5a2 2 0 014 0V6H4V4.5z"/>
+          </svg>
+          <span class="url-text" id="urlText">google.com</span>
         </div>
-        <input
-          type="text"
-          class="url-input"
-          id="urlInput"
-          placeholder="Search or enter website name"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-          onkeydown="handleUrlKeydown(event)"
-          onblur="deactivateUrlBar()"
-          oninput="handleUrlInput(this.value)"
-        />
-        <button class="url-action-btn refresh-btn" id="refreshBtn" onclick="refreshPage()" title="Refresh">
+        <button class="url-reload-btn" id="urlReloadBtn" onclick="reloadPage(event)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M23 4v6h-6M1 20v-6h6"/>
+            <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
             <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
           </svg>
         </button>
-        <button class="url-action-btn cancel-btn" id="cancelBtn" onclick="deactivateUrlBar()">Cancel</button>
+      </div>
+
+      <!-- Expanded URL input -->
+      <div class="url-input-wrap" id="urlInputWrap">
+        <div class="url-input-bar">
+          <svg class="url-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input type="text" id="urlInput" class="url-input"
+            placeholder="Search or enter website name"
+            autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+            onkeydown="handleKey(event)"
+            oninput="handleInput(this.value)" />
+          <button class="url-clear-btn" id="urlClearBtn" onclick="clearUrl()">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".3"/><path d="M15 9l-6 6M9 9l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <button class="url-cancel-btn" onclick="deactivateUrl()">Cancel</button>
       </div>
     </div>
-  </div>
 
-  <!-- ═══════════════════════════ PROGRESS BAR ═══════════════════════════ -->
-  <div class="progress-bar" id="progressBar">
-    <div class="progress-fill" id="progressFill"></div>
-  </div>
-
-  <!-- ═══════════════════════════ MAIN VIEWPORT ═══════════════════════════ -->
-  <div class="browser-viewport" id="browserViewport">
-    <iframe class="page-frame" id="pageFrame" src="pages/home.html" frameborder="0" sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>
-    <div class="page-transition-overlay" id="transitionOverlay"></div>
-  </div>
-
-  <!-- ═══════════════════════════ BOTTOM TOOLBAR ═══════════════════════════ -->
-  <div class="bottom-toolbar" id="bottomToolbar">
-    <button class="tb-btn" id="backBtn" onclick="goBack()" title="Back">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15 18l-6-6 6-6"/>
-      </svg>
-    </button>
-    <button class="tb-btn" id="fwdBtn" onclick="goForward()" title="Forward">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 18l6-6-6-6"/>
-      </svg>
-    </button>
-    <button class="tb-btn" onclick="showShareSheet()" title="Share">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/>
-      </svg>
-    </button>
-    <button class="tb-btn tabs-btn" onclick="toggleTabView()" title="Tabs" id="tabsBtn">
-      <span class="tabs-count-box">
-        <span class="tabs-count" id="tabsCount">1</span>
-      </span>
-    </button>
-    <button class="tb-btn" onclick="toggleBookmarks()" title="Bookmarks">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- ═══════════════════════════ TAB VIEW OVERLAY ═══════════════════════════ -->
-  <div class="tab-view-overlay" id="tabViewOverlay">
-    <div class="tab-view-header">
-      <span class="tab-view-title">Tabs</span>
-      <button class="tab-new-btn" onclick="addNewTab()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <path d="M12 5v14M5 12h14"/>
+    <!-- Toolbar row -->
+    <div class="toolbar" id="toolbar">
+      <button class="tb-btn" id="backBtn" onclick="goBack()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="tb-btn" id="fwdBtn" onclick="goForward()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <button class="tb-btn" onclick="showShare()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/>
         </svg>
-        New Tab
+      </button>
+      <button class="tb-btn" onclick="showBookmarks()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+        </svg>
+      </button>
+      <button class="tb-btn tabs-btn" onclick="showTabs()">
+        <div class="tabs-box"><span class="tabs-num" id="tabsNum">1</span></div>
       </button>
     </div>
-    <div class="tab-cards-grid" id="tabCardsGrid"></div>
-    <div class="tab-view-footer">
-      <button class="tab-done-btn" onclick="toggleTabView()">Done</button>
+  </div>
+
+  <!-- ══ SUGGESTIONS DROPDOWN ══ -->
+  <div class="suggestions-drop" id="suggestionsDrop"></div>
+
+  <!-- ══ TAB VIEW ══ -->
+  <div class="tab-view" id="tabView">
+    <div class="tab-view-bg" id="tabViewBg"></div>
+
+    <!-- Tab cards area -->
+    <div class="tab-cards-scroll" id="tabCardsScroll"></div>
+
+    <!-- Bottom bar of tab view -->
+    <div class="tab-view-bottom">
+      <button class="tv-new-btn" onclick="newTab()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <div class="tv-tab-label">
+        <button class="tv-private">Private</button>
+        <button class="tv-tab-count" id="tvTabCount">1 Tab</button>
+      </div>
+      <button class="tv-done-btn" onclick="hideTabs()">Done</button>
     </div>
   </div>
 
-  <!-- ═══════════════════════════ SHARE SHEET ═══════════════════════════ -->
-  <div class="share-sheet-bg" id="shareSheetBg" onclick="hideShareSheet()"></div>
+  <!-- ══ SHARE SHEET ══ -->
+  <div class="sheet-backdrop" id="shareBackdrop" onclick="hideShare()"></div>
   <div class="share-sheet" id="shareSheet">
-    <div class="share-sheet-handle"></div>
-    <div class="share-url-preview">
-      <div class="share-url-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
-        </svg>
+    <div class="sheet-handle"></div>
+    <div class="share-preview">
+      <div class="share-prev-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
       </div>
       <div>
-        <div class="share-url-title" id="shareTitle">Home</div>
-        <div class="share-url-sub" id="shareUrl">safari://home</div>
+        <div class="share-prev-title" id="sharePrevTitle">Google</div>
+        <div class="share-prev-url" id="sharePrevUrl">google.com</div>
       </div>
     </div>
-    <div class="share-actions-row">
-      <div class="share-action" onclick="hideShareSheet()">
-        <div class="share-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 17H5a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v3m-3 9h8m-4-4l4 4-4 4"/></svg></div>
-        <span>Copy Link</span>
-      </div>
-      <div class="share-action" onclick="hideShareSheet()">
-        <div class="share-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-        <span>Message</span>
-      </div>
-      <div class="share-action" onclick="hideShareSheet()">
-        <div class="share-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-        <span>Mail</span>
-      </div>
-      <div class="share-action" onclick="hideShareSheet()">
-        <div class="share-action-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
-        <span>Add Bookmark</span>
-      </div>
+    <div class="share-icons-row">
+      <div class="share-icon-item" onclick="hideShare()"><div class="share-icon-circle">📋</div><span>Copy</span></div>
+      <div class="share-icon-item" onclick="hideShare()"><div class="share-icon-circle">💬</div><span>Message</span></div>
+      <div class="share-icon-item" onclick="hideShare()"><div class="share-icon-circle">✉️</div><span>Mail</span></div>
+      <div class="share-icon-item" onclick="hideShare()"><div class="share-icon-circle">📌</div><span>Remind Me</span></div>
+      <div class="share-icon-item" onclick="hideShare()"><div class="share-icon-circle">📖</div><span>Reading List</span></div>
     </div>
-    <div class="share-list">
-      <div class="share-list-item" onclick="hideShareSheet()">Add to Home Screen</div>
-      <div class="share-list-item" onclick="hideShareSheet()">Find on Page</div>
-      <div class="share-list-item" onclick="hideShareSheet()">Add to Reading List</div>
+    <div class="share-list-group">
+      <div class="share-list-row" onclick="hideShare()">Add Bookmark</div>
+      <div class="share-list-row" onclick="hideShare()">Add to Favorites</div>
+      <div class="share-list-row" onclick="hideShare()">Find on Page</div>
+      <div class="share-list-row" onclick="hideShare()">Add to Home Screen</div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════ BOOKMARKS PANEL ═══════════════════════════ -->
-  <div class="bookmarks-bg" id="bookmarksBg" onclick="toggleBookmarks()"></div>
-  <div class="bookmarks-panel" id="bookmarksPanel">
-    <div class="bookmarks-header">
-      <span class="bookmarks-title">Bookmarks</span>
-      <button class="bookmarks-done" onclick="toggleBookmarks()">Done</button>
+  <!-- ══ BOOKMARKS SHEET ══ -->
+  <div class="sheet-backdrop" id="bkBackdrop" onclick="hideBookmarks()"></div>
+  <div class="bk-sheet" id="bkSheet">
+    <div class="sheet-handle"></div>
+    <div class="bk-header">
+      <span class="bk-title">Bookmarks</span>
+      <button class="bk-done" onclick="hideBookmarks()">Done</button>
     </div>
-    <div class="bookmarks-tabs-row">
-      <button class="bk-tab active" onclick="switchBkTab(this,'bk')">
+    <div class="bk-seg">
+      <button class="bk-seg-btn active" onclick="bkSeg(this,'bk')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
       </button>
-      <button class="bk-tab" onclick="switchBkTab(this,'rl')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <button class="bk-seg-btn" onclick="bkSeg(this,'rl')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
       </button>
-      <button class="bk-tab" onclick="switchBkTab(this,'hist')">
+      <button class="bk-seg-btn" onclick="bkSeg(this,'hist')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </button>
     </div>
-    <div class="bookmarks-list" id="bookmarksList"></div>
+    <div class="bk-list" id="bkList"></div>
   </div>
 
-  <!-- ═══════════════════════════ URL SUGGESTIONS ═══════════════════════════ -->
-  <div class="url-suggestions" id="urlSuggestions"></div>
-
-  <!-- ═══════════════════════════ DARK MODE TOGGLE ═══════════════════════════ -->
-  <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
-    <svg id="darkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-    </svg>
-    <svg id="lightIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none">
-      <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-    </svg>
+  <!-- ══ DARK MODE TOGGLE ══ -->
+  <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">
+    <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
   </button>
 
   <script src="app.js"></script>
