@@ -1,387 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Top Stories</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-      background: #f2f2f7;
-      color: #1c1c1e;
-      min-height: 100vh;
-    }
-
-    /* ── Header ── */
-    .header {
-      background: #fff;
-      padding: 18px 16px 14px;
-      border-bottom: 0.5px solid rgba(0,0,0,.10);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .header-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: #ff3b30;
-      margin-bottom: 4px;
-    }
-    .header-title {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.6px;
-      color: #1c1c1e;
-    }
-    .header-tabs {
-      display: flex;
-      gap: 0;
-      margin-top: 12px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      gap: 6px;
-    }
-    .header-tabs::-webkit-scrollbar { display: none; }
-    .tab-pill {
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
-      border: 1.5px solid rgba(0,0,0,.12);
-      color: #3c3c43;
-      background: transparent;
-      transition: all 0.2s ease;
-    }
-    .tab-pill.active {
-      background: #1c1c1e;
-      color: #fff;
-      border-color: #1c1c1e;
-    }
-
-    /* ── Featured card ── */
-    .featured-card {
-      margin: 12px 12px 0;
-      background: #fff;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    .featured-card:active { transform: scale(0.98); }
-    .featured-hero {
-      height: 180px;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #e94560 100%);
-      display: flex;
-      align-items: flex-end;
-      padding: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-    .featured-hero::before {
-      content: '🚀';
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 64px;
-      opacity: 0.3;
-    }
-    .featured-tag {
-      background: #ff3b30;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      padding: 4px 8px;
-      border-radius: 6px;
-    }
-    .featured-body { padding: 14px 16px 16px; }
-    .featured-title {
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: -0.4px;
-      line-height: 1.25;
-      color: #1c1c1e;
-      margin-bottom: 8px;
-    }
-    .featured-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: #8e8e93;
-    }
-    .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: #c7c7cc; }
-
-    /* ── Story list ── */
-    .stories-header {
-      padding: 20px 16px 10px;
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      color: #1c1c1e;
-    }
-
-    .story-card {
-      background: #fff;
-      margin: 0 12px 10px;
-      border-radius: 14px;
-      padding: 14px;
-      display: flex;
-      gap: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    .story-card:active { transform: scale(0.98); }
-
-    .story-thumb {
-      width: 70px;
-      height: 70px;
-      border-radius: 10px;
-      font-size: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .story-info { flex: 1; min-width: 0; }
-    .story-source {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #8e8e93;
-      margin-bottom: 4px;
-    }
-    .story-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1c1c1e;
-      line-height: 1.3;
-      letter-spacing: -0.2px;
-      margin-bottom: 5px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .story-meta { font-size: 11px; color: #aeaeb2; }
-
-    /* ── Opinion / long read ── */
-    .opinion-card {
-      background: linear-gradient(135deg, #1c1c1e, #2c2c2e);
-      margin: 0 12px 10px;
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .opinion-card::before {
-      content: '"';
-      position: absolute;
-      top: -10px;
-      right: 12px;
-      font-size: 100px;
-      color: rgba(255,255,255,0.06);
-      font-family: Georgia, serif;
-      line-height: 1;
-    }
-    .opinion-label {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: #ff9f0a;
-      margin-bottom: 8px;
-    }
-    .opinion-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.4;
-      margin-bottom: 10px;
-    }
-    .opinion-author { font-size: 13px; color: #aeaeb2; }
-
-    /* ── Trending ── */
-    .trending-section {
-      margin: 0 12px 10px;
-      background: #fff;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-    }
-    .trending-header {
-      padding: 14px 16px 10px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #1c1c1e;
-      border-bottom: 0.5px solid rgba(0,0,0,.08);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .trending-row {
-      display: flex;
-      align-items: center;
-      padding: 11px 16px;
-      gap: 12px;
-      border-bottom: 0.5px solid rgba(0,0,0,.06);
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .trending-row:last-child { border-bottom: none; }
-    .trending-row:active { background: rgba(0,0,0,.04); }
-    .trending-rank {
-      font-size: 18px;
-      font-weight: 800;
-      color: #c7c7cc;
-      width: 22px;
-      text-align: right;
-      flex-shrink: 0;
-    }
-    .trending-topic { font-size: 15px; font-weight: 600; color: #1c1c1e; flex: 1; }
-    .trending-count { font-size: 12px; color: #8e8e93; }
-
-    .bottom-pad { height: 32px; }
-
-    @media (prefers-color-scheme: dark) {
-      body { background: #000; color: #fff; }
-      .header { background: #1c1c1e; border-color: rgba(255,255,255,.1); }
-      .header-title { color: #fff; }
-      .tab-pill { border-color: rgba(255,255,255,.15); color: #aeaeb2; }
-      .tab-pill.active { background: #fff; color: #000; border-color: #fff; }
-      .featured-card, .story-card, .trending-section { background: #1c1c1e; }
-      .featured-title, .story-title, .trending-topic { color: #fff; }
-      .trending-header { color: #fff; border-color: rgba(255,255,255,.08); }
-      .trending-row { border-color: rgba(255,255,255,.06); }
-      .trending-row:active { background: rgba(255,255,255,.05); }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f2f2f7;color:#1c1c1e;min-height:100vh}
+    .header{background:#fff;padding:18px 16px 12px;position:sticky;top:0;z-index:5;border-bottom:1px solid rgba(0,0,0,.08)}
+    .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .brand{font-size:24px;font-weight:800;letter-spacing:-0.5px;color:#1c1c1e;display:flex;align-items:center;gap:6px}
+    .brand-dot{width:8px;height:8px;background:#ff3b30;border-radius:50%}
+    .pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+    .pills::-webkit-scrollbar{display:none}
+    .pill{padding:5px 16px;border-radius:20px;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer;border:1.5px solid rgba(0,0,0,.12);color:#3c3c43;background:transparent;transition:all .2s}
+    .pill.on{background:#1c1c1e;color:#fff;border-color:#1c1c1e}
+    .hero-card{margin:12px 12px 0;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer}
+    .hero-img{height:175px;display:flex;align-items:flex-end;padding:14px;background:linear-gradient(135deg,#1a1a2e,#0f3460,#e94560)}
+    .hero-tag{background:#ff3b30;color:#fff;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:4px 8px;border-radius:6px}
+    .hero-body{padding:14px 16px}
+    .hero-title{font-size:18px;font-weight:800;letter-spacing:-0.3px;line-height:1.3;margin-bottom:8px}
+    .hero-meta{font-size:12px;color:#8e8e93;display:flex;gap:6px;align-items:center}
+    .dot{width:3px;height:3px;border-radius:50%;background:#c7c7cc}
+    h3{font-size:18px;font-weight:700;padding:18px 16px 10px}
+    .card{background:#fff;margin:0 12px 10px;border-radius:14px;padding:13px;display:flex;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.07);cursor:pointer;transition:transform .2s}
+    .card:active{transform:scale(.98)}
+    .card-img{width:68px;height:68px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0}
+    .card-src{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#8e8e93;margin-bottom:4px}
+    .card-title{font-size:15px;font-weight:700;line-height:1.3;letter-spacing:-.2px;color:#1c1c1e;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .card-meta{font-size:11px;color:#aeaeb2;margin-top:4px}
+    .opinion{background:#1c1c1e;margin:0 12px 10px;border-radius:16px;padding:16px;cursor:pointer;position:relative;overflow:hidden}
+    .opinion::before{content:'"';position:absolute;top:-12px;right:10px;font-size:96px;color:rgba(255,255,255,.05);font-family:Georgia,serif;line-height:1}
+    .op-tag{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#ff9f0a;margin-bottom:8px}
+    .op-title{font-size:16px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:8px}
+    .op-by{font-size:13px;color:#aeaeb2}
+    @media(prefers-color-scheme:dark){
+      body{background:#000}
+      .header{background:#1c1c1e;border-color:rgba(255,255,255,.08)}
+      .brand,.hero-title,.card-title{color:#fff}
+      .pill{border-color:rgba(255,255,255,.15);color:#aeaeb2}
+      .pill.on{background:#fff;color:#000;border-color:#fff}
+      .hero-card,.card{background:#1c1c1e}
     }
   </style>
 </head>
 <body>
-
   <div class="header">
-    <div class="header-eyebrow">Apple News</div>
-    <div class="header-title">Top Stories</div>
-    <div class="header-tabs">
-      <div class="tab-pill active">For You</div>
-      <div class="tab-pill">Technology</div>
-      <div class="tab-pill">Science</div>
-      <div class="tab-pill">Business</div>
-      <div class="tab-pill">Sports</div>
-      <div class="tab-pill">Health</div>
+    <div class="header-top">
+      <div class="brand"><div class="brand-dot"></div>News</div>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8e8e93" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+    </div>
+    <div class="pills">
+      <div class="pill on">For You</div>
+      <div class="pill">Tech</div>
+      <div class="pill">Science</div>
+      <div class="pill">Business</div>
+      <div class="pill">Sports</div>
+      <div class="pill">Health</div>
     </div>
   </div>
 
-  <!-- Featured -->
-  <div class="featured-card">
-    <div class="featured-hero">
-      <div class="featured-tag">Breaking</div>
-    </div>
-    <div class="featured-body">
-      <div class="featured-title">Next-Generation AI Models Are Changing How We Work and Create</div>
-      <div class="featured-meta">
-        <span>Tech Times</span>
-        <span class="meta-dot"></span>
-        <span>2 hours ago</span>
-        <span class="meta-dot"></span>
-        <span>5 min read</span>
-      </div>
+  <div class="hero-card">
+    <div class="hero-img"><div class="hero-tag">Breaking</div></div>
+    <div class="hero-body">
+      <div class="hero-title">AI Models Are Changing How We Work and Create</div>
+      <div class="hero-meta"><span>Tech Times</span><span class="dot"></span><span>2h ago</span><span class="dot"></span><span>5 min</span></div>
     </div>
   </div>
 
-  <div class="stories-header">Latest</div>
+  <h3>Latest</h3>
 
-  <!-- Stories -->
-  <div class="story-card">
-    <div class="story-thumb" style="background:#fff0e6">🌍</div>
-    <div class="story-info">
-      <div class="story-source">Reuters</div>
-      <div class="story-title">Global Climate Summit Reaches Landmark Carbon Agreement</div>
-      <div class="story-meta">3 hours ago · 4 min read</div>
+  <div class="card">
+    <div class="card-img" style="background:#fff3e0">🌍</div>
+    <div>
+      <div class="card-src">Reuters</div>
+      <div class="card-title">Global Climate Summit Reaches Landmark Carbon Agreement</div>
+      <div class="card-meta">3h ago · 4 min read</div>
     </div>
   </div>
 
-  <div class="story-card">
-    <div class="story-thumb" style="background:#e8f4fd">🚀</div>
-    <div class="story-info">
-      <div class="story-source">Space.com</div>
-      <div class="story-title">Private Mission Successfully Returns Moon Samples to Earth</div>
-      <div class="story-meta">5 hours ago · 3 min read</div>
+  <div class="card">
+    <div class="card-img" style="background:#e8f4fd">🚀</div>
+    <div>
+      <div class="card-src">Space.com</div>
+      <div class="card-title">Private Mission Successfully Returns Moon Samples to Earth</div>
+      <div class="card-meta">5h ago · 3 min read</div>
     </div>
   </div>
 
-  <!-- Opinion card -->
-  <div class="opinion-card">
-    <div class="opinion-label">Opinion</div>
-    <div class="opinion-title">"The smartphone era isn't ending — it's deepening in ways we haven't imagined yet."</div>
-    <div class="opinion-author">By Sarah Chen, Technology Editor</div>
+  <div class="opinion">
+    <div class="op-tag">Opinion</div>
+    <div class="op-title">"The smartphone era isn't ending — it's deepening in ways we haven't imagined yet."</div>
+    <div class="op-by">Sarah Chen, Technology Editor</div>
   </div>
 
-  <div class="story-card">
-    <div class="story-thumb" style="background:#f0f9f0">🏥</div>
-    <div class="story-info">
-      <div class="story-source">Health Wire</div>
-      <div class="story-title">New Study Links Daily Walking to Significant Reduction in Heart Disease Risk</div>
-      <div class="story-meta">6 hours ago · 6 min read</div>
-    </div>
-  </div>
-
-  <div class="story-card">
-    <div class="story-thumb" style="background:#fdf0f8">🎮</div>
-    <div class="story-info">
-      <div class="story-source">GameSpot</div>
-      <div class="story-title">Biggest Game Launch of the Year Breaks Simultaneous Player Records</div>
-      <div class="story-meta">8 hours ago · 2 min read</div>
+  <div class="card">
+    <div class="card-img" style="background:#f0f9f0">🏥</div>
+    <div>
+      <div class="card-src">Health Wire</div>
+      <div class="card-title">Daily Walking Linked to Major Reduction in Heart Disease Risk</div>
+      <div class="card-meta">6h ago · 6 min read</div>
     </div>
   </div>
 
-  <!-- Trending -->
-  <div class="trending-section">
-    <div class="trending-header">🔥 Trending Now</div>
-    <div class="trending-row">
-      <div class="trending-rank">1</div>
-      <div class="trending-topic">Artificial Intelligence</div>
-      <div class="trending-count">2.4M stories</div>
-    </div>
-    <div class="trending-row">
-      <div class="trending-rank">2</div>
-      <div class="trending-topic">Space Exploration</div>
-      <div class="trending-count">891K stories</div>
-    </div>
-    <div class="trending-row">
-      <div class="trending-rank">3</div>
-      <div class="trending-topic">Climate Change</div>
-      <div class="trending-count">654K stories</div>
-    </div>
-    <div class="trending-row">
-      <div class="trending-rank">4</div>
-      <div class="trending-topic">Electric Vehicles</div>
-      <div class="trending-count">432K stories</div>
+  <div class="card">
+    <div class="card-img" style="background:#fdf0f8">🎮</div>
+    <div>
+      <div class="card-src">GameSpot</div>
+      <div class="card-title">Biggest Game Launch of 2025 Breaks Simultaneous Player Records</div>
+      <div class="card-meta">8h ago · 2 min read</div>
     </div>
   </div>
 
-  <div class="story-card">
-    <div class="story-thumb" style="background:#fff8e6">💰</div>
-    <div class="story-info">
-      <div class="story-source">Bloomberg</div>
-      <div class="story-title">Tech Stocks Rally as Inflation Data Comes in Better Than Expected</div>
-      <div class="story-meta">10 hours ago · 3 min read</div>
-    </div>
-  </div>
-
-  <div class="bottom-pad"></div>
-
+  <div style="height:28px"></div>
 </body>
 </html>
